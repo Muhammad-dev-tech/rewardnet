@@ -1,0 +1,7 @@
+providers = ["php"]
+
+[phases.setup]
+  nixPkgs = ["php82"]
+
+[variables]
+  PORT = "8080"
