@@ -47,25 +47,25 @@ $isAdmin = $user['role'] === 'admin';
         <main class="main-panel">
             <header class="topbar">
                 <div>
-                    <p class="eyebrow"><?= $isAdmin ? 'Admin portal' : 'User portal' ?></p>
+                    <p class="eyebrow">Dashboard</p>
                     <h1>Welcome, <?= htmlspecialchars($user['full_name']) ?></h1>
                 </div>
-                <span class="status-pill"><?= htmlspecialchars($user['role']) ?></span>
+                <span class="status-pill"><?= htmlspecialchars($user['role'] === 'admin' ? 'Admin' : 'Member') ?></span>
             </header>
 
             <?php if ($isAdmin): ?>
                 <section class="panel">
                     <div class="panel-header">
-                        <h2>Overview</h2>
+                        <h2>Summary</h2>
                     </div>
-                    <div class="info-note">A quick snapshot of your ad network performance and member activity.</div>
+                    <div class="info-note">A quick snapshot of your account activity and reward performance.</div>
                 </section>
             <?php endif; ?>
 
             <?php if ($isAdmin): ?>
                 <section class="panel">
                     <div class="panel-header">
-                        <h2>Platform overview</h2>
+                        <h2>Performance</h2>
                     </div>
                     <div class="stats-grid">
                         <a class="stat-card-link" href="/members.php">
@@ -173,7 +173,7 @@ $isAdmin = $user['role'] === 'admin';
 
             <section class="panel">
                 <div class="panel-header">
-                    <h2><?= $isAdmin ? 'Recent platform activity' : 'Recent activity' ?></h2>
+                    <h2><?= $isAdmin ? 'Recent activity' : 'Recent activity' ?></h2>
                 </div>
                 <table>
                     <thead>

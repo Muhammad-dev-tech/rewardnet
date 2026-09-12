@@ -6,8 +6,15 @@
     --text: #111827;
     --muted: #5b6474;
     --line: #e5e7eb;
-    --sidebar: #0f172a;
-    --sidebar-soft: #111827;
+    --sidebar: #f8fafc;
+    --sidebar-soft: #eef4ff;
+    --sidebar-text: #111827;
+    --sidebar-text-muted: #475569;
+    --sidebar-hover: rgba(37, 99, 235, 0.08);
+    --sidebar-border: rgba(148, 163, 184, 0.28);
+    --nav-toggle-bg: rgba(255, 255, 255, 0.9);
+    --nav-toggle-text: #111827;
+    --nav-toggle-border: rgba(148, 163, 184, 0.38);
     --primary: #2563eb;
     --primary-soft: #eff6ff;
     --success: #0f766e;
@@ -24,6 +31,13 @@
         --line: #1f2937;
         --sidebar: #020817;
         --sidebar-soft: #0b1120;
+        --sidebar-text: #e5ecff;
+        --sidebar-text-muted: #cbd5e1;
+        --sidebar-hover: rgba(148, 163, 184, 0.12);
+        --sidebar-border: rgba(148, 163, 184, 0.12);
+        --nav-toggle-bg: rgba(15, 23, 42, 0.72);
+        --nav-toggle-text: #ffffff;
+        --nav-toggle-border: rgba(148, 163, 184, 0.2);
         --primary: #60a5fa;
         --primary-soft: rgba(96, 165, 250, 0.12);
         --success: #34d399;
@@ -108,22 +122,22 @@ form button[type="submit"]:hover {
     height: 42px;
     border-radius: 12px;
     padding: 0;
-    background: rgba(15, 23, 42, 0.72);
-    color: white;
+    background: var(--nav-toggle-bg);
+    color: var(--nav-toggle-text);
     font-size: 1.3rem;
     line-height: 1;
-    border: 1px solid rgba(148, 163, 184, 0.2);
-    box-shadow: 0 8px 18px rgba(15, 23, 42, 0.2);
+    border: 1px solid var(--nav-toggle-border);
+    box-shadow: 0 8px 18px rgba(15, 23, 42, 0.12);
 }
 
 .sidebar {
-    width: 240px;
-    background: linear-gradient(180deg, var(--sidebar) 0%, var(--sidebar-soft) 100%);
-    color: #e5ecff;
-    padding: 26px 18px;
-    border-radius: 22px;
-    box-shadow: var(--shadow);
-    border: 1px solid rgba(255,255,255,0.04);
+    width: 220px;
+    background: rgba(255, 255, 255, 0.02);
+    color: var(--sidebar-text);
+    padding: 20px 14px;
+    border-radius: 18px;
+    box-shadow: none;
+    border: 1px solid var(--sidebar-border);
     transition: left 0.22s ease;
     position: sticky;
     top: 24px;
@@ -131,33 +145,34 @@ form button[type="submit"]:hover {
 }
 
 .brand {
-    margin: 4px 10px 28px;
-    font-size: 1.55rem;
-    font-weight: 500;
+    margin: 8px 10px 22px;
+    font-size: 1.25rem;
+    font-weight: 600;
     letter-spacing: -0.04em;
-    color: #fff;
+    color: var(--sidebar-text);
 }
 
 .sidebar nav {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 4px;
     height: calc(100% - 72px);
 }
 
 .sidebar a {
-    color: #dfe9ff;
+    color: var(--sidebar-text-muted);
     text-decoration: none;
-    padding: 11px 12px;
+    padding: 10px 10px;
     border-radius: 10px;
     font-weight: 500;
-    transition: background 0.18s ease, color 0.18s ease;
+    font-size: 0.96rem;
+    transition: background 0.18s ease, color 0.18s ease, transform 0.18s ease;
 }
 
 .sidebar a:hover,
 .sidebar a.active {
-    background: rgba(148, 163, 184, 0.12);
-    color: white;
+    background: var(--sidebar-hover);
+    color: var(--sidebar-text);
 }
 
 .sidebar .logout-link {
@@ -243,7 +258,7 @@ h2 {
 .stats-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    gap: 18px;
+    gap: 16px;
     margin-bottom: 22px;
 }
 
@@ -251,44 +266,43 @@ h2 {
     display: block;
     text-decoration: none;
     color: inherit;
-    transition: transform 0.18s ease, box-shadow 0.18s ease;
+    transition: transform 0.18s ease;
 }
 
 .stat-card-link:hover {
-    transform: translateY(-2px);
+    transform: translateY(-1px);
 }
 
 .stat-card {
-    background: linear-gradient(180deg, var(--panel) 0%, var(--panel-soft) 100%);
+    background: var(--panel-soft);
     border: 1px solid var(--line);
-    border-radius: 18px;
-    padding: 20px 18px;
-    box-shadow: var(--shadow);
-    border-top: 4px solid;
+    border-radius: 16px;
+    padding: 16px 16px 18px;
+    box-shadow: none;
     height: 100%;
 }
 
-.stat-card.purple { border-top-color: #8b5cf6; }
-.stat-card.green { border-top-color: #22c55e; }
-.stat-card.orange { border-top-color: #f59e0b; }
-.stat-card.blue { border-top-color: #3b82f6; }
+.stat-card.purple { background: rgba(139, 92, 246, 0.04); }
+.stat-card.green { background: rgba(34, 197, 94, 0.04); }
+.stat-card.orange { background: rgba(245, 158, 11, 0.04); }
+.stat-card.blue { background: rgba(59, 130, 246, 0.04); }
 
 .stat-card span {
     display: block;
-    margin-bottom: 10px;
+    margin-bottom: 8px;
     color: var(--muted);
-    font-size: 0.74rem;
-    letter-spacing: 0.1em;
-    font-weight: 500;
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    font-weight: 600;
     text-transform: uppercase;
 }
 
 .stat-card strong {
     display: block;
-    font-size: clamp(1.8rem, 2vw, 2.2rem);
+    font-size: clamp(1.7rem, 2vw, 2.1rem);
     letter-spacing: -0.06em;
     color: var(--text);
-    font-weight: 500;
+    font-weight: 600;
 }
 
 .content-grid {
@@ -959,11 +973,11 @@ tbody tr:hover {
         width: 260px;
         z-index: 60;
         border-radius: 0 22px 22px 0;
-        box-shadow: 0 20px 44px rgba(15, 23, 42, 0.28);
-        border: 1px solid rgba(148, 163, 184, 0.14);
+        box-shadow: 0 20px 44px rgba(15, 23, 42, 0.18);
+        border: 1px solid var(--sidebar-border);
         border-left: none;
         padding: 26px 18px 20px;
-        background: linear-gradient(180deg, rgba(2, 8, 23, 0.98) 0%, rgba(15, 23, 42, 0.98) 100%);
+        background: linear-gradient(180deg, var(--sidebar) 0%, var(--sidebar-soft) 100%);
     }
 
     body {
@@ -1000,12 +1014,13 @@ tbody tr:hover {
         border-radius: 12px;
         font-size: 0.98rem;
         background: rgba(148, 163, 184, 0.04);
+        color: var(--sidebar-text);
     }
 
     .sidebar a:hover,
     .sidebar a.active {
-        background: rgba(96, 165, 250, 0.16);
-        color: #fff;
+        background: var(--sidebar-hover);
+        color: var(--sidebar-text);
     }
 
     .brand {

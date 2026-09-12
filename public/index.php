@@ -35,7 +35,7 @@ if ($auth->isLoggedIn()) {
             <div class="feature-list">
                 <div><strong>Users</strong><span>Register and manage accounts</span></div>
                 <div><strong>Rewards</strong><span>Earn virtual data by ad completion</span></div>
-                <div><strong>Admin</strong><span>Review members, ads, and activity</span></div>
+                <div><strong>Experience</strong><span>Track points, redeem rewards, and stay engaged</span></div>
             </div>
         </div>
     </div>
