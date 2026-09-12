@@ -14,6 +14,8 @@ $adService = new AdvertisementService();
 $userId = (int) $_SESSION['rewardnet_user_id'];
 $adId = (int) ($_GET['ad_id'] ?? 0);
 $message = '';
+$ad = null;
+$session = null;
 
 if ($adId <= 0) {
     header('Location: /dashboard.php');
@@ -22,20 +24,33 @@ if ($adId <= 0) {
 
 try {
     $ad = $adService->getAdvertisementById($adId);
-    $session = $adService->startAdSession($userId, $adId);
-    if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['complete'] ?? '') === '1') {
-        $result = $adService->completeAdSession($userId, (int) $session['id']);
-        $message = 'Ad completed. You earned ' . (int) $result['reward_amount'] . ' MB.';
-        $session['completion_status'] = 'completed';
 
-        if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest') {
-            header('Content-Type: application/json');
-            echo json_encode([
-                'success' => true,
-                'message' => $message,
-                'reward_amount' => (int) $result['reward_amount'],
-            ]);
-            exit;
+    if ($ad) {
+        // Start or retrieve existing session safely
+        try {
+            $session = $adService->startAdSession($userId, $adId);
+        } catch (Throwable $e) {
+            // Handle cases where session exists or fetch manually if needed
+            $session = null;
+        }
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['complete'] ?? '') === '1') {
+            $sessionId = (int) ($session['id'] ?? $_POST['session_id'] ?? 0);
+            $result = $adService->completeAdSession($userId, $sessionId);
+            $message = 'Ad completed. You earned ' . (int) $result['reward_amount'] . ' MB.';
+            if (is_array($session)) {
+                $session['completion_status'] = 'completed';
+            }
+
+            if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest') {
+                header('Content-Type: application/json');
+                echo json_encode([
+                    'success' => true,
+                    'message' => $message,
+                    'reward_amount' => (int) $result['reward_amount'],
+                ]);
+                exit;
+            }
         }
     }
 } catch (Throwable $e) {
@@ -110,7 +125,7 @@ try {
                         </div>
                     <?php endif; ?>
 
-                    <?php if (!empty($session) && ($session['completion_status'] ?? '') !== 'completed'): ?>
+                    <?php if (empty($session) || ($session['completion_status'] ?? '') !== 'completed'): ?>
                         <div id="completion-status" class="info-note">Watch the video to the end to claim your reward.</div>
                     <?php else: ?>
                         <div id="completion-status" class="flash">Reward already claimed. You can return to your dashboard.</div>
@@ -131,6 +146,7 @@ try {
         const rewardVideo = document.getElementById('reward-video');
         const completionStatus = document.getElementById('completion-status');
         const adId = <?= (int) ($ad['id'] ?? 0) ?>;
+        const sessionId = <?= (int) ($session['id'] ?? 0) ?>;
         const completionUrl = window.location.href;
         let rewardGranted = false;
 
@@ -142,6 +158,7 @@ try {
                 const formData = new FormData();
                 formData.append('complete', '1');
                 formData.append('ad_id', String(adId));
+                formData.append('session_id', String(sessionId));
 
                 fetch(completionUrl, {
                     method: 'POST',
