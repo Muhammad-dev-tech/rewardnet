@@ -103,6 +103,18 @@ if ($isCli) {
                         <?php endforeach; ?>
                     </ul>
                 </div>
+
+                <div style="text-align: left; background: #f8fafc; padding: 14px; border-radius: 8px; border: 1px solid #e2e8f0; font-size: 13px; margin-bottom: 18px;">
+                    <p style="margin-top:0;"><strong>Connection Diagnostic Info:</strong></p>
+                    <ul style="margin: 0 0 0 16px; padding: 0;">
+                        <li><strong>Host:</strong> <code><?= htmlspecialchars((string) $host) ?></code></li>
+                        <li><strong>Port:</strong> <code><?= htmlspecialchars((string) $port) ?></code></li>
+                        <li><strong>Database:</strong> <code><?= htmlspecialchars((string) $dbName) ?></code></li>
+                        <li><strong>User:</strong> <code><?= htmlspecialchars((string) $user) ?></code></li>
+                        <li><strong>Has MYSQL_URL:</strong> <?= !empty(getenv('MYSQL_URL') ?: ($_ENV['MYSQL_URL'] ?? ($_SERVER['MYSQL_URL'] ?? ''))) ? 'Yes' : 'No' ?></li>
+                        <li><strong>Available Env Keys:</strong> <code><?= htmlspecialchars(implode(', ', array_keys(array_filter(array_merge($_ENV, $_SERVER, getenv()), fn($k) => stripos($k, 'mysql') !== false || stripos($k, 'db') !== false, ARRAY_FILTER_USE_KEY)))) ?></code></li>
+                    </ul>
+                </div>
             <?php else: ?>
                 <div class="flash" style="background:#dcfce7; color:#166534; border-color:#86efac; margin: 18px 0;">
                     <strong>Setup completed successfully!</strong>
