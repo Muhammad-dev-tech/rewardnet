@@ -1,7 +1,4 @@
 providers = ["php"]
 
 [phases.setup]
-  nixPkgs = ["php82"]
-
-[variables]
-  PORT = "8080"
+  nixPkgs = ["php82", "php82Extensions.pdo_mysql"]

@@ -1,0 +1,11 @@
+{
+  "name": "rewardnet/app",
+  "description": "RewardNet web application",
+  "type": "project",
+  "require": {
+    "php": ">=8.2",
+    "ext-pdo": "*",
+    "ext-pdo_mysql": "*",
+    "ext-session": "*"
+  }
+}

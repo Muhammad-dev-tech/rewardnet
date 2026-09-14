@@ -13,9 +13,11 @@ final class Database
         }
 
         $config = require __DIR__ . '/../config/config.php';
+        $portClause = !empty($config['db']['port']) ? ';port=' . $config['db']['port'] : '';
         $dsn = sprintf(
-            'mysql:host=%s;dbname=%s;charset=%s',
+            'mysql:host=%s%s;dbname=%s;charset=%s',
             $config['db']['host'],
+            $portClause,
             $config['db']['database'],
             $config['db']['charset']
         );
