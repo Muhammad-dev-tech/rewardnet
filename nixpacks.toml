@@ -1,4 +1,12 @@
 providers = ["php"]
 
 [phases.setup]
-  nixPkgs = ["php82", "php82Extensions.pdo_mysql"]
+  nixPkgs = [
+    "php82",
+    "php82Extensions.pdo",
+    "php82Extensions.pdo_mysql",
+    "php82Packages.composer"
+  ]
+
+[phases.install]
+  cmds = ["composer install --ignore-platform-reqs --no-interaction"]
