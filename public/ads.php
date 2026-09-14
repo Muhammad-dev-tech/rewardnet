@@ -26,10 +26,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     mkdir($uploadDir, 0775, true);
                 }
 
-                $allowedTypes = ['video/mp4', 'video/webm', 'video/ogg', 'video/quicktime'];
-                $mime = mime_content_type($_FILES['media_file']['tmp_name']) ?: '';
-                 if (!in_array($mime, $allowedTypes, true)) {
+                $allowedTypes = ['video/mp4', 'video/webm', 'video/ogg', 'video/quicktime', 'application/octet-stream'];
+                $ext = strtolower(pathinfo($_FILES['media_file']['name'], PATHINFO_EXTENSION));
+                $allowedExts = ['mp4', 'webm', 'ogg', 'mov'];
+                if (!in_array($ext, $allowedExts, true)) {
                     throw new InvalidArgumentException('Only MP4, WebM, OGG, and MOV video files are allowed.');
+                }
+
+                if (function_exists('mime_content_type')) {
+                    $mime = mime_content_type($_FILES['media_file']['tmp_name']) ?: '';
+                    if (!empty($mime) && !in_array($mime, $allowedTypes, true) && strpos($mime, 'video/') !== 0) {
+                        throw new InvalidArgumentException('Invalid video file format.');
+                    }
                 }
 
                 $filename = time() . '_' . preg_replace('/[^A-Za-z0-9_.-]/', '_', basename($_FILES['media_file']['name']));
@@ -238,8 +246,10 @@ $ads = $service->getAdvertisements(true);
                 }
             });
 
-            dropZone.addEventListener('click', function () {
-                mediaInput.click();
+            dropZone.addEventListener('click', function (event) {
+                if (event.target !== mediaInput) {
+                    mediaInput.click();
+                }
             });
 
             dropZone.addEventListener('keydown', function (event) {

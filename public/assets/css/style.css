@@ -1066,3 +1066,118 @@ tbody tr:hover {
         flex-direction: column;
     }
 }
+
+/* Upload dropzone styling */
+.upload-field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.upload-label {
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--text);
+}
+
+.upload-dropzone {
+    border: 2px dashed var(--line);
+    border-radius: 16px;
+    padding: 28px 20px;
+    text-align: center;
+    background: var(--panel-soft);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+}
+
+.upload-dropzone:hover,
+.upload-dropzone.dragover {
+    border-color: var(--primary);
+    background: var(--sidebar-hover);
+}
+
+.upload-dropzone-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    pointer-events: none;
+}
+
+.upload-icon-wrap {
+    position: relative;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 14px;
+    background: var(--primary-soft);
+    color: var(--primary);
+}
+
+.upload-icon-wrap svg {
+    width: 26px;
+    height: 26px;
+    fill: currentColor;
+}
+
+.upload-plus {
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    font-size: 14px;
+    font-weight: bold;
+    background: var(--primary);
+    color: #fff;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+}
+
+.upload-content strong {
+    display: block;
+    color: var(--text);
+    font-size: 0.98rem;
+}
+
+.upload-content span {
+    color: var(--muted);
+    font-size: 0.82rem;
+}
+
+.upload-file-name {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--primary);
+    padding: 4px 12px;
+    background: var(--panel);
+    border-radius: 999px;
+    border: 1px solid var(--line);
+}
+
+.upload-preview {
+    margin-top: 12px;
+    width: 100%;
+    max-width: 480px;
+}
+
+.upload-preview.hidden {
+    display: none;
+}
+
+.upload-preview video {
+    width: 100%;
+    border-radius: 12px;
+    background: #000;
+}
+
