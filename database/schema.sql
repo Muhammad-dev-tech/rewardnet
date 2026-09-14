@@ -5,7 +5,8 @@ CREATE TABLE IF NOT EXISTS users (
     password_hash VARCHAR(255) NOT NULL,
     role ENUM('admin', 'member') NOT NULL DEFAULT 'member',
     points INT NOT NULL DEFAULT 0,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    INDEX idx_users_email (email)
 );
 
 CREATE TABLE IF NOT EXISTS advertisements (
@@ -28,6 +29,8 @@ CREATE TABLE IF NOT EXISTS ad_views (
     completed_at TIMESTAMP NULL,
     completion_status ENUM('incomplete', 'completed', 'rejected') NOT NULL DEFAULT 'incomplete',
     reward_amount INT NOT NULL DEFAULT 0,
+    INDEX idx_ad_views_user (user_id, completion_status),
+    INDEX idx_ad_views_ad (advertisement_id),
     CONSTRAINT fk_ad_views_user FOREIGN KEY (user_id) REFERENCES users(id)
         ON DELETE CASCADE,
     CONSTRAINT fk_ad_views_ad FOREIGN KEY (advertisement_id) REFERENCES advertisements(id)
@@ -42,6 +45,7 @@ CREATE TABLE IF NOT EXISTS reward_transactions (
     transaction_type ENUM('credit', 'debit', 'adjustment') NOT NULL,
     description VARCHAR(255) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    INDEX idx_reward_transactions_user (user_id, created_at),
     CONSTRAINT fk_reward_transactions_user FOREIGN KEY (user_id) REFERENCES users(id)
         ON DELETE CASCADE,
     CONSTRAINT fk_reward_transactions_ad_view FOREIGN KEY (ad_view_id) REFERENCES ad_views(id)
@@ -54,7 +58,8 @@ CREATE TABLE IF NOT EXISTS rewards (
     description TEXT,
     points_required INT NOT NULL,
     is_active TINYINT(1) NOT NULL DEFAULT 1,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    INDEX idx_rewards_points (points_required)
 );
 
 CREATE TABLE IF NOT EXISTS transactions (
@@ -64,13 +69,7 @@ CREATE TABLE IF NOT EXISTS transactions (
     points INT NOT NULL,
     description VARCHAR(255) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    INDEX idx_transactions_user (user_id, created_at),
     CONSTRAINT fk_transactions_user FOREIGN KEY (user_id) REFERENCES users(id)
         ON DELETE CASCADE
 );
-
-CREATE INDEX IF NOT EXISTS idx_users_email ON users(email);
-CREATE INDEX IF NOT EXISTS idx_rewards_points ON rewards(points_required);
-CREATE INDEX IF NOT EXISTS idx_transactions_user ON transactions(user_id, created_at);
-CREATE INDEX IF NOT EXISTS idx_ad_views_user ON ad_views(user_id, completion_status);
-CREATE INDEX IF NOT EXISTS idx_ad_views_ad ON ad_views(advertisement_id);
-CREATE INDEX IF NOT EXISTS idx_reward_transactions_user ON reward_transactions(user_id, created_at);

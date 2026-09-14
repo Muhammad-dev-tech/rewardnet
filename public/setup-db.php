@@ -58,7 +58,12 @@ try {
         throw new RuntimeException("Schema file is empty.");
     }
 
-    $pdo->exec($sql);
+    $statements = array_filter(array_map('trim', explode(';', $sql)));
+    foreach ($statements as $statement) {
+        if ($statement !== '') {
+            $pdo->exec($statement);
+        }
+    }
     $messages[] = "Executed database schema successfully. All tables and indexes are ready.";
 
     // Step 4: Verify created tables
